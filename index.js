@@ -1,53 +1,25 @@
-const container = document.querySelector('.container')
-const slide = document.querySelector('.swipe-container')
-const box = document.querySelectorAll('.box')
-
-let start
-let change
-
-// для десктопа
-container.addEventListener('dragstart', (event) => {
-    start = event.clientX
-})
-
-container.addEventListener('dragover', (e) => {
-    e.preventDefault()
-    let touch = e.clientX
-    change = start - touch
-})
-
-container.addEventListener('dragend', showSlide)
-function showSlide() {
-    if (change > 0) {
-        slide.style.left = '-100vw'
-    } else {
-        slide.style.left = '0'
-    }
-}
-
-// для мобильного
-container.addEventListener('touchstart', (e) => {
-    start = e.touches[0].clientX
-})
-
-container.addEventListener('touchmove', (e) => {
-    let touch = e.touches[0].clientX
-    change = start - touch
-})
-
-container.addEventListener('touchend', showSlide)
-function showSlide() {
-    if (change > 10) {
-        slide.style.left = '-100vw'
-    } else {
-        slide.style.left = '0'
-    }
-}
+//часы
+const clock = document.querySelector('.box__clock');
 // список
 let message = document.querySelector('#text')
 let addButton = document.querySelector('.form__button')
 let messageList = document.querySelector('.form__list')
 let list = []
+// свайп
+const container = document.querySelector('.container')
+const slide = document.querySelector('.swipe-container')
+const box = document.querySelectorAll('.box')
+let start
+let change
+//
+function showSlide() {
+    if (change > 90) {
+        slide.style.left = '-100vw'
+    } else {
+        slide.style.left = '0'
+    }
+}
+//
 if (localStorage.getItem('allMessages')) {
     list = JSON.parse(localStorage.getItem('allMessages'))
     list.forEach((item) => item.toAdd = false)
@@ -74,11 +46,8 @@ function showMessages() {
         }
     })
 }
-addButton.addEventListener('click', addMessage);
 localStorage.removeItem('allMessages')
-
-//часы
-const clock = document.querySelector('.box__clock');
+//
 function showTime() {
     const time = new Date()
     let h = time.getHours().toString()
@@ -96,8 +65,19 @@ function showTime() {
     let clockString = h + ':' + m + ':' + s
     clock.textContent = clockString
 }
-
 showTime()
 setInterval(showTime, 1000)
 
 
+
+container.addEventListener('touchstart', (e) => {
+    start = e.touches[0].clientX
+})
+
+container.addEventListener('touchmove', (e) => {
+    let touch = e.touches[0].clientX
+    change = start - touch
+})
+
+container.addEventListener('touchend', showSlide)
+addButton.addEventListener('click', addMessage);
