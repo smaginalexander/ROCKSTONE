@@ -9,40 +9,19 @@
     <link rel="stylesheet" href='./index.css'>
 </head>
 
-<body class="page">
-    <header class="header">
-        <div class="header__burger">
-            <span></span>
+<body class="page" draggable="true">
+    <div class="swipe-container">
+        <div class="box box_list">
+            <form class="form">
+                <textarea id="text"></textarea>
+                <button class="form__button">Send</button>
+            </form>
+            <ul class="form__list">
+            </ul>
         </div>
-    </header>
-    <nav class="menu">
-        <ul class="menu__list">
-            <li class="menu__link">
-                <a href='#'>Главная</a>
-            </li>
-            <li class="menu__link">
-                <a href='#'>О компании</a>
-            </li>
-            <li class="menu__link">
-                <a href='#'>Профиль</a>
-            </li>
-            <li class="menu__link">
-                <a href='#'>Контакты</a>
-            </li>
-            <li class="menu__link">
-                <a href='#'>Помощь</a>
-            </li>
-        </ul>
-    </nav>
-    <div class="checkbox-container">
-        <input type="checkbox" id='1'>
-        <label for="1">отключить шапку сайта</label>
-        <input type="checkbox" id='2'>
-        <label for="2">отключить меню</label>
-        <input type="checkbox" id='3'>
-        <label for="3">отключить ссылки в меню</label>
-        <input type="checkbox" id='4'>
-        <label for="4">отключить все перечисленные элементы</label>
+        <div class="box box_time">
+            <p class="box__clock">00:00:00</p>
+        </div>
     </div>
     <script src='./index.js'></script>
 </body>

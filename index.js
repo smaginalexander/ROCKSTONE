@@ -1,91 +1,100 @@
-// 1. Сверстать страницу с боковым меню.
-const burger = document.querySelector('.header__burger')
-const munu = document.querySelector('.menu')
+const container = document.querySelector('.page')
+const slide = document.querySelector('.swipe-container')
+const box = document.querySelectorAll('.box')
 
-const handleToggleBurger = () => {
-    burger.classList.toggle('header__burger_disable');
-    munu.classList.toggle('menu_disable')
+let start
+let change
+
+// для десктопа
+container.addEventListener('dragstart', (event) => {
+    start = event.clientX
+})
+
+container.addEventListener('dragover', (e) => {
+    e.preventDefault()
+    let touch = e.clientX
+    change = start - touch
+})
+
+container.addEventListener('dragend', showSlide)
+function showSlide() {
+    if (change > 0) {
+        slide.style.left = '-100vw'
+    } else {
+        slide.style.left = '0'
+    }
 }
 
-burger.addEventListener('click', handleToggleBurger)
+// для мобильного
+container.addEventListener('touchstart', (e) => {
+    start = e.touches[0].clientX
+})
 
+container.addEventListener('touchmove', (e) => {
+    let touch = e.touches[0].clientX
+    change = start - touch
+})
 
-// 2. Сделать функцию сдвига элементов массива вправо на N шагов
-let a = [1, 2, 3, 4, 5]
-console.log('входные данные', a);
-let k = 3;
-
-for (i = 0; i < k; i++) a.unshift(a.pop());
-console.log('выход данных', a);
-
-//3. Найти самую длинную общую последовательность 2х строк.
-const firstString = 'aababba';
-const secondString = 'abbaabcd';
-console.log(`${firstString} сравним с ${secondString}`);
-
-const comparator = (line1, line2) => {
-    arr = [];
-    line1.split('').reduce((last, item) => {
-        if (line2.indexOf(`${last}${item}`) !== -1) {
-            arr.push(`${last}${item}`);
-            return `${last}${item}`;
+container.addEventListener('touchend', showSlide)
+function showSlide() {
+    if (change > 10) {
+        slide.style.left = '-100vw'
+    } else {
+        slide.style.left = '0'
+    }
+}
+// список
+let message = document.querySelector('#text')
+let addButton = document.querySelector('.form__button')
+let messageList = document.querySelector('.form__list')
+let list = []
+if (localStorage.getItem('allMessages')) {
+    list = JSON.parse(localStorage.getItem('allMessages'))
+    list.forEach((item) => item.toAdd = false)
+    showMessages()
+}
+function addMessage(e) {
+    e.preventDefault()
+    localStorage.setItem('allMessages', JSON.stringify(list))
+    list = JSON.parse(localStorage.getItem('allMessages'))
+    list.forEach((item) => item.toAdd = false)
+    let messageObj = {
+        value: message.value,
+        toAdd: true
+    }
+    list.push(messageObj)
+    showMessages()
+}
+function showMessages() {
+    let showMessage = ''
+    list.forEach((item) => {
+        if (item.value !== '') {
+            showMessage += `<li>${item.value}<span ${item.toAdd && `class="added"`}></span></li>`
+            messageList.innerHTML = showMessage
         }
-        else return item;
-    }, '');
-    return arr.sort((a, b) => b.length - a.length)[0]
+    })
 }
-console.log('самая длинная общая последовательность =', comparator(firstString, secondString));
+addButton.addEventListener('click', addMessage);
+localStorage.removeItem('allMessages')
 
-//4. Реализовать отображение/скрытие элементов при переключении чек-боксов
-const headerCheckbox = document.getElementById('1')
-const menuCheckbox = document.getElementById('2')
-const LinksCheckbox = document.getElementById('3')
-const AllCheckbox = document.getElementById('4')
-
-const header = document.querySelector('.header');
-const menu = document.querySelector('.menu');
-const links = document.querySelector('.menu__list');
-
-const changeElementViasability = (checkbox, element) => {
-    if (checkbox.checked) {
-        element.classList.add('hidden')
-    } else {
-        element.classList.remove('hidden')
+//часы
+const clock = document.querySelector('.box__clock');
+function showTime() {
+    const time = new Date()
+    let h = time.getHours().toString()
+    let m = time.getMinutes().toString()
+    let s = time.getSeconds().toString()
+    if (h.length < 2) {
+        h = '0' + h
     }
-}
-
-const changeAll = () => {
-    if (AllCheckbox.checked) {
-        headerCheckbox.checked = true
-        headerCheckbox.disabled = true
-        menuCheckbox.checked = true
-        menuCheckbox.disabled = true
-        LinksCheckbox.checked = true
-        LinksCheckbox.disabled = true
-    } else {
-        headerCheckbox.checked = false
-        headerCheckbox.disabled = false
-        menuCheckbox.checked = false
-        menuCheckbox.disabled = false
-        LinksCheckbox.checked = false
-        LinksCheckbox.disabled = false
+    if (m.length < 2) {
+        m = '0' + m
     }
+    if (s.length < 2) {
+        s = '0' + s
+    }
+    let clockString = h + ':' + m + ':' + s
+    clock.textContent = clockString
 }
-
-headerCheckbox.addEventListener('click', () => {
-    changeElementViasability(headerCheckbox, header)
-})
-menuCheckbox.addEventListener('click', () => {
-    changeElementViasability(menuCheckbox, menu)
-})
-LinksCheckbox.addEventListener('click', () => {
-    changeElementViasability(LinksCheckbox, links)
-})
-
-AllCheckbox.addEventListener('click', () => {
-    AllCheckbox.toggleAttribute('checked')
-    changeAll()
-    changeElementViasability(headerCheckbox, header)
-    changeElementViasability(menuCheckbox, menu)
-    changeElementViasability(LinksCheckbox, links)
-})
+showTime()
+setInterval(showTime, 1000)
