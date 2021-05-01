@@ -1,4 +1,4 @@
-const container = document.querySelector('.page')
+const container = document.querySelector('.container')
 const slide = document.querySelector('.swipe-container')
 const box = document.querySelectorAll('.box')
 
@@ -96,5 +96,8 @@ function showTime() {
     let clockString = h + ':' + m + ':' + s
     clock.textContent = clockString
 }
+
 showTime()
 setInterval(showTime, 1000)
+
+
